@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react';
-import { CoinList } from '../config/api';
-import axios from 'axios';
 import { CryptoState } from '../CryptoContext';
 import { Container, LinearProgress, Table, TableHead, TableCell, TableContainer, TableRow, TextField, ThemeProvider, Typography, createTheme, TableBody, makeStyles } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
@@ -33,29 +31,23 @@ const useStyles=makeStyles(()=>({
   }));
 
 const CoinsTable = () => {
-    const [coins,setCoins] = useState([]);
-    const [loading,setLoading] = useState(false);
+    
     const [search,setSearch] = useState();
     const [page,setPage]=useState(1);
 
     const classes=useStyles();
 
-    const {currency,symbol}=CryptoState();
+    const {currency,symbol,coins,loading,fetchCoins}=CryptoState();
 
     const navigate=useNavigate();
 
-    const fetchCoins=async()=>{
-        setLoading(true);
-        const {data}=await axios.get(CoinList(currency));
-        setCoins(data);
-        setLoading(false);
-    }
+    
 
     console.log(coins)
     
     useEffect(()=>{
         fetchCoins();
-        
+        //eslint-disable-next-line react-hooks/exhaustive-deps
     },[currency])
 
     const darkTheme=createTheme({
